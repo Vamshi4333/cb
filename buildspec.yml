@@ -1,0 +1,32 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18   # or python: 3.11 / java: corretto17 / go: 1.x etc.
+    commands:
+      - echo Installing dependencies...
+      - npm install   # change to pip install -r requirements.txt, mvn install, go mod tidy, etc.
+  pre_build:
+    commands:
+      - echo Running pre-build steps...
+      - npm run lint || true   # optional, change/remove as needed
+  build:
+    commands:
+      - echo Build started on `date`
+      - npm run build          # replace with your build command
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Running tests...
+      - npm test || true       # optional: remove `|| true` to fail build on test failure
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: no
+  base-directory: dist   # adjust based on where your build output is stored
+
+cache:
+  paths:
+    - 'node_modules/**/*'  # change for your dependency manager
